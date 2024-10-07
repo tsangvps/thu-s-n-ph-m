@@ -26,9 +26,6 @@ require_once(__DIR__ . '/database.php');
 require_once(__DIR__ . '/functions.php');
 require_once(__DIR__ . '/session.php');
 
-$db->update('rental_requests', ['status2' => 'expired'], 'end_date < CURDATE()');
-$db->update('rental_requests', ['status1' => 'refuse'], "status2 = 'expired' and status1 = 'pending'");
-
 if (!empty($session->get('account'))) {
     $User_data = $db->fetch_assoc("SELECT rl.role_name, u.* FROM users AS u JOIN roles AS rl ON u.role_id = rl.id WHERE u.`id` = '" . $session->get('account') . "'", 1);
     if (empty($User_data)) {
