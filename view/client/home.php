@@ -5,7 +5,7 @@ $script = "";
 
 include_once(__DIR__ . "/header.php");
 
-$perPage = 10; // Số sản phẩm mỗi trang
+$perPage = 6; // Số sản phẩm mỗi trang
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Số trang hiện tại
 $offset = ($page - 1) * $perPage; // Tính toán offset
 
@@ -32,7 +32,7 @@ if (!empty($brand)) {
 
 // Tìm kiếm theo từ khóa
 if (!empty($search)) {
-    $sql .= " AND (`msp` LIKE '%$search%' OR `name` LIKE '%$search%' OR `description` LIKE '%$search%')";
+    $sql .= " AND (`id` LIKE '%$search%' OR `name` LIKE '%$search%' OR `description` LIKE '%$search%')";
 }
 
 // Truy vấn tổng số sản phẩm sau khi lọc
@@ -72,6 +72,7 @@ $brands = $db->fetch_assoc("SELECT brand FROM products group by brand ", 0);
             <!-- Ô chọn danh mục -->
             <div class="col-md-3">
                 <div class="form-group position-relative">
+                    <p>danh mục:</p>
                     <select class="form-control" name="category">
                         <option value="">Chọn danh mục</option>
                         <?php foreach ($categories as $cate) { ?>
@@ -89,13 +90,14 @@ $brands = $db->fetch_assoc("SELECT brand FROM products group by brand ", 0);
             <!-- Ô chọn thương hiệu -->
             <div class="col-md-3">
                 <div class="form-group position-relative">
+                    <p>Thương Hiệu:</p>
                     <select class="form-control" name="brand">
                         <option value="">Chọn thương hiệu</option>
                         <?php
-                        foreach ($brands as $brand) { ?>
-                            <option value="<?= $brand['brand'] ?>"
-                                <?= (isset($_GET['brand']) && strtolower(trim($brand['brand'])) == strtolower(trim($_GET['brand']))) ? 'selected' : '' ?>>
-                                <?= $brand['brand'] ?></option>
+                        foreach ($brands as $_brand) { ?>
+                            <option value="<?= $_brand['brand'] ?>"
+                                <?= (isset($_GET['brand']) && strtolower(trim($_brand['brand'])) == strtolower(trim($_GET['brand']))) ? 'selected' : '' ?>>
+                                <?= $_brand['brand'] ?></option>
                         <?php } ?>
                         <!-- Điền thêm các option cho thương hiệu ở đây -->
                     </select>
@@ -106,6 +108,7 @@ $brands = $db->fetch_assoc("SELECT brand FROM products group by brand ", 0);
 
             <!-- Ô tìm kiếm sản phẩm -->
             <div class="col-md-4">
+                <p>Từ Khóa:</p>
                 <div class="form-group position-relative">
                     <input type="text" class="form-control" name="search" placeholder="Tìm kiếm sản phẩm" value="<?php echo $search; ?>">
                     <!-- Icon tìm kiếm -->
@@ -115,6 +118,7 @@ $brands = $db->fetch_assoc("SELECT brand FROM products group by brand ", 0);
 
             <!-- Nút tìm kiếm -->
             <div class="col-md-2">
+                <p>.</p>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary w-100">
                         Tìm kiếm <i class="bi bi-arrow-right-circle ms-2"></i>
@@ -175,17 +179,53 @@ $brands = $db->fetch_assoc("SELECT brand FROM products group by brand ", 0);
     <?php if ($totalPages > 1): ?>
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <?php
+                // Xác định giới hạn số trang hiển thị
+                $maxPagesToShow = 5; // Số lượng trang muốn hiển thị
+                $startPage = max(1, $page - floor($maxPagesToShow / 2));
+                $endPage = min($totalPages, $page + floor($maxPagesToShow / 2));
+
+                // Đảm bảo rằng luôn có đủ $maxPagesToShow trang để hiển thị
+                if ($endPage - $startPage + 1 < $maxPagesToShow) {
+                    if ($startPage == 1) {
+                        $endPage = min($totalPages, $startPage + $maxPagesToShow - 1);
+                    } else {
+                        $startPage = max(1, $endPage - $maxPagesToShow + 1);
+                    }
+                }
+
+                // Nút trang đầu tiên
+                if ($startPage > 1): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1&category=<?php echo htmlspecialchars($category); ?>&brand=<?php echo htmlspecialchars($brand ?? ''); ?>&search=<?php echo htmlspecialchars($search); ?>">1</a>
+                    </li>
+                    <?php if ($startPage > 2): ?>
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
                     <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
-                        <a class="page-link" href="?page=<?php echo $i; ?>&category=<?php echo $category; ?>&brand=<?php echo $brand; ?>&search=<?php echo $search; ?>">
+                        <a class="page-link" href="?page=<?php echo $i; ?>&category=<?php echo htmlspecialchars($category); ?>&brand=<?php echo htmlspecialchars($brand ?? ''); ?>&search=<?php echo htmlspecialchars($search); ?>">
                             <?php echo $i; ?>
                         </a>
                     </li>
                 <?php endfor; ?>
+
+                <!-- Nút trang cuối cùng -->
+                <?php if ($endPage < $totalPages): ?>
+                    <?php if ($endPage < $totalPages - 1): ?>
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    <?php endif; ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $totalPages; ?>&category=<?php echo htmlspecialchars($category); ?>&brand=<?php echo htmlspecialchars($brand ?? ''); ?>&search=<?php echo htmlspecialchars($search); ?>">
+                            <?php echo $totalPages; ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </nav>
     <?php endif; ?>
-
 </div>
 <div class="modal fade" id="order" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">

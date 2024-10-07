@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_GET) && !empty($_GET['subm
         }
         if ($data['status'] != 'pending') {
             $status = $data['status'] == 'success' ? 'đã được xác nhận' : 'đã bị hủy';
-            $text = 'Đơn hàng #' . $info['id'] . ' của bạn ' . $status . ' bởi quản trị viên.';
+            $text = 'Phiếu Mượn #' . $info['id'] . ' của bạn ' . $status . ' bởi quản trị viên.';
             $db->insert("message", ['user_id' => $info['user_id'], 'text' => $text, 'title' => 'Đơn hàng']);
         }
         exit(json_encode(returnData($data, "Cập nhật thành công!")));
@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_GET) && !empty($_GET['subm
                 'phone' => $data['phone'],
                 'name' => $data['name'],
                 'active' => $data['active'],
-                'password' => md5($data['active']),
+                'password' => md5($data['password']),
                 'role_id' => $data['role'],
             ], "`id`='" . $data['id'] . "'");
         } else {

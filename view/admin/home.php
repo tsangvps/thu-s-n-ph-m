@@ -45,9 +45,9 @@ $history = $db->fetch_assoc("SELECT rental_requests.*, products.name as pname, p
                             <tr>
                                 <th>Mã Sản Phẩm</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Khách hàng</th>
+                                <th>Người mượn</th>
                                 <th>Trạng thái đơn</th>
-                                <th>Chú ý Từ Khách Hàng</th>
+                                <th>Chú ý từ người mượn</th>
                                 <th>Ngày thuê</th>
                                 <th>Ngày trả</th>
                                 <th style="width: 90px">Hành Động</th>
@@ -173,6 +173,7 @@ $('.btn-update').on('click', function() {
 $(document).ready(function() {
     var table = $('#listKh').DataTable({
         order: [],
+        lengthMenu: [5, 10, 25, 50, 100],
         language: {
             lengthMenu: "Hiển thị _MENU_ bản ghi",
             zeroRecords: "Không tìm thấy bản ghi nào",

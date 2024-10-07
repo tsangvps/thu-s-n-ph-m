@@ -7,7 +7,7 @@ $header = "
 $script = "
 ";
 
-$products = $db->fetch_assoc("SELECT products.*, categories.name as category_name from `products` INNER JOIN `categories` on categories.id = products.category_id", 0);
+$products = $db->fetch_assoc("SELECT products.*, categories.name as category_name from `products` INNER JOIN `categories` on categories.id = products.category_id ORDER BY `products`.`id` DESC", 0);
 include_once(__DIR__ . "/../header.php");
 ?>
 <style>
@@ -407,6 +407,7 @@ include_once(__DIR__ . "/../header.php");
 
     $(document).ready(function() {
         $('#listKh').DataTable({
+            order: [],
             "language": {
                 "sProcessing": "Đang xử lý...",
                 "sLengthMenu": "Hiển thị _MENU_ mục",

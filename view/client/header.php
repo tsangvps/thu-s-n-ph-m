@@ -88,7 +88,7 @@
                                     <span class="pc-micon">
                                         <i class="ti ti-history"></i>
                                     </span>
-                                    <span class="pc-mtext">Sản Phẩm Đã Thuê</span><span class="pc-arrow">
+                                    <span class="pc-mtext">Thiết bị mượn</span><span class="pc-arrow">
                                         <!-- <i data-feather="chevron-right"></i> -->
                                     </span></a>
                                 <!-- <ul class="pc-submenu">

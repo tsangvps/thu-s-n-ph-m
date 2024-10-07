@@ -63,7 +63,7 @@ if (empty($User_data) || $User_data['role_id'] != 2) {
                             <span class="pc-micon">
                                 <i class="ti ti-shopping-cart-plus"></i>
                             </span>
-                            <span class="pc-mtext">Đơn hàng</span><span class="pc-arrow">
+                            <span class="pc-mtext">Phiếu mượn</span><span class="pc-arrow">
                             </span></a>
                     </li>
                     <li class="pc-item pc-hasmenu">
@@ -71,14 +71,14 @@ if (empty($User_data) || $User_data['role_id'] != 2) {
                             <span class="pc-micon">
                                 <i class="ti ti-shopping-cart-plus"></i>
                             </span>
-                            <span class="pc-mtext">Quản lý sản phẩm</span><span class="pc-arrow">
+                            <span class="pc-mtext">Quản lý thiết bị</span><span class="pc-arrow">
                                 <i data-feather="chevron-right"></i>
                             </span></a>
                         <ul class="pc-submenu">
                             <li class="pc-item"><a class="pc-link"
-                                    href="<?= BASE_URL("/admin/product/category") ?>">Danh mục sản phẩm</a></li>
+                                    href="<?= BASE_URL("/admin/product/category") ?>">Danh mục</a></li>
                             <li class="pc-item"><a class="pc-link" href="<?= BASE_URL("/admin/product/list") ?>">Danh
-                                    sách sản phẩm</a></li>
+                                    sách thiết bị</a></li>
 
                         </ul>
                     </li>
